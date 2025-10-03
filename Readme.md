@@ -31,7 +31,7 @@ The primary goal is to find the best-fitting straight line through a set of data
 
 Linear regression models the relationship between a dependent variable (Y) and an independent variable (X) using a straight line:
 
-$$Y \approx b_0 + b_1 X$$
+$$\large Y \approx b_0 + b_1 X$$
 
 where:
 
@@ -50,15 +50,15 @@ The aim of linear regression is to find the best-fitting straight line that desc
 ### Expectation (mean)
 
 The mean (expected value) of a set $X = \{x_1, x_2, \dots, x_n\}$ is
-$$E(X) = \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$$
+$$\large E(X) = \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$$
 (where $\sum$ is the summation symbol: $\sum_{i=1}^{n} x_i = x_1 + x_2 + \dots + x_n$.)
 
 ### Standard deviation and variance
 
 The (population) variance measures the average squared deviation from the mean:
-$$\mathrm{Var}(X) = E\big[(X - E(X))^2\big] = \frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^2$$
+$$\large \mathrm{Var}(X) = E\big[(X - E(X))^2\big] = \frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^2$$
 The (population) standard deviation $\sigma$ is the square root of the variance:
-$$\sigma_X = \sqrt{\mathrm{Var}(X)}$$
+$$\large \sigma_X = \sqrt{\mathrm{Var}(X)}$$
 (For sample estimates you will often see the denominator $n-1$ instead of $n$: $s^2 = \frac{1}{n-1}\sum (x_i-\bar{x})^2$.)
 
 #### Useful identity (proof)
@@ -81,7 +81,7 @@ Var(X) = E[(X - μ)²] = E[X² - 2μX + μ²]
 = E[X²] - [E[X]]²
 
 So the **variance identity** is:
-$$\boxed{\text{Var}(X) = E[X^2] - [E[X]]^2}$$
+$$\boxed{\large \text{Var}(X) = E[X^2] - [E[X]]^2}$$
 
 ---
 
@@ -94,7 +94,7 @@ $$\hat{y}_i = b_0 + b_1 x_i$$
 and the residual (error) is $e_i = y_i - \hat{y}_i$.
 
 We choose $b_0$ and $b_1$ to minimize the sum of squared residuals:
-$$S(b_0,b_1) = \sum_{i=1}^{n} \big(y_i - (b_0 + b_1 x_i)\big)^2$$
+$$\large S(b_0,b_1) = \sum_{i=1}^{n} \big(y_i - (b_0 + b_1 x_i)\big)^2$$
 We square the differences so that positive and negative errors do not cancel and to penalize larger errors more.
 
 ### Derivation (step-by-step)
@@ -168,7 +168,7 @@ Data: $x=[1,2,3]$, $y=[2,3,5]$.
 5. Intercept: $b_0 = \bar{y} - b_1\bar{x} = \tfrac{10}{3} - 1.5\cdot 2 = \tfrac{1}{3}$.
 
 So the fitted line is:
-$$\boxed{\hat{y} = \tfrac{1}{3} + 1.5x}$$
+$$\boxed{\large \hat{y} = \tfrac{1}{3} + 1.5x}$$
 
 ---
 
@@ -183,7 +183,7 @@ $$\boxed{\hat{y} = \tfrac{1}{3} + 1.5x}$$
 
 Once we have our regression coefficients $b_0, b_1$, we can make predictions for new values of X:
 
-$$\hat{y} = b_0 + b_1 \cdot x_{new}$$
+$$\large \hat{y} = b_0 + b_1 \cdot x_{new}$$
 
 ![Prediction Example](image-1.png)
 
