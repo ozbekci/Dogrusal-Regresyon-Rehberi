@@ -56,23 +56,23 @@ $$E(X) = \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$$
 ### Standard deviation and variance
 
 The (population) variance measures the average squared deviation from the mean:
-$$\text{Var}(X) = E\big[(X - E(X))^2\big] = \frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^2$$
+$$\mathrm{Var}(X) = E\big[(X - E(X))^2\big] = \frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^2$$
 The (population) standard deviation $\sigma$ is the square root of the variance:
-$$\sigma_X = \sqrt{\text{Var}(X)}$$
+$$\sigma_X = \sqrt{\mathrm{Var}(X)}$$
 (For sample estimates you will often see the denominator $n-1$ instead of $n$: $s^2 = \frac{1}{n-1}\sum (x_i-\bar{x})^2$.)
 
 #### Useful identity (proof)
 
-Start from $\text{Var}(X)=E\big[(X - \mu)^2\big]$ with $\mu=E(X)$:
+Start from $\mathrm{Var}(X)=E\big[(X - \mu)^2\big]$ with $\mu=E(X)$:
 $$\begin{aligned}
-\text{Var}(X)
+\mathrm{Var}(X)
 &= E(X^2 - 2\mu X + \mu^2) \\
 &= E(X^2) - 2\mu E(X) + \mu^2 \\
 &= E(X^2) - 2\mu^2 + \mu^2 \\
 &= E(X^2) - \big(E(X)\big)^2.
 \end{aligned}$$
 So a compact form is:
-$$\boxed{\text{Var}(X) = E(X^2) - [E(X)]^2}$$
+$$\boxed{\mathrm{Var}(X) = E(X^2) - [E(X)]^2}$$
 
 ---
 
@@ -130,7 +130,7 @@ Set partial derivatives of $S$ with respect to $b_0$ and $b_1$ equal to zero.
    $$\boxed{b_0 = \bar{y} - b_1 \bar{x}}$$
 
 Equivalently (using covariance and variance notation):
-$$b_1 = \frac{\text{Cov}(X,Y)}{\text{Var}(X)}, \quad\text{where }\text{Cov}(X,Y)=\frac{1}{n}\sum (x_i-\bar{x})(y_i-\bar{y})$$
+$$b_1 = \frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}(X)}, \quad\mathrm{where\ } \mathrm{Cov}(X,Y)=\frac{1}{n}\sum (x_i-\bar{x})(y_i-\bar{y})$$
 
 ---
 
