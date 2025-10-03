@@ -101,38 +101,74 @@ We square the differences so that positive and negative errors do not cancel and
 
 Set partial derivatives of $S$ with respect to $b_0$ and $b_1$ equal to zero.
 
-1. Derivative w.r.t. $b_0$:
-   $$\frac{\partial S}{\partial b_0}
-   = -2\sum_{i=1}^{n} \big(y_i - b_0 - b_1 x_i\big)
-   \overset{!}{=} 0
-   \quad\Rightarrow\quad
-   \sum_{i=1}^{n} y_i = n b_0 + b_1 \sum_{i=1}^{n} x_i$$
-   Rewrite using means $\bar{x}=\frac{1}{n}\sum x_i$ and $\bar{y}=\frac{1}{n}\sum y_i$:
-   $$\boxed{\bar{y} = b_0 + b_1 \bar{x}} \qquad\text{(Equation A)}$$
+**Step 1: Derivative with respect to $b_0$**
 
-2. Derivative w.r.t. $b_1$:
-   $$\frac{\partial S}{\partial b_1}
-   = -2\sum_{i=1}^{n} x_i\big(y_i - b_0 - b_1 x_i\big)
-   \overset{!}{=} 0
-   \quad\Rightarrow\quad
-   \sum_{i=1}^{n} x_i y_i = b_0 \sum_{i=1}^{n} x_i + b_1 \sum_{i=1}^{n} x_i^2$$
-   (Equation B)
+Take the partial derivative of the sum of squared errors:
+$$\large \frac{\partial S}{\partial b_0} = \frac{\partial}{\partial b_0} \sum_{i=1}^{n} \big(y_i - (b_0 + b_1 x_i)\big)^2$$
 
-3. Solve the two normal equations. From Equation A:
-   $$b_0 = \bar{y} - b_1 \bar{x}$$
-   Substitute into Equation B and simplify:
-   $$\sum_{i=1}^{n} x_i y_i
-   = (\bar{y} - b_1 \bar{x})\sum_{i=1}^{n} x_i + b_1 \sum_{i=1}^{n} x_i^2
-   = n\bar{x}\bar{y} - b_1 n\bar{x}^2 + b_1 \sum_{i=1}^{n} x_i^2$$
-   Rearrange to isolate $b_1$:
-   $$\sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y}
-   = b_1\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right)$$
-   Recognize the numerator and denominator as centered sums:
-   $$\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
-   = \sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y}$$
-   $$\sum_{i=1}^{n} (x_i - \bar{x})^2
-   = \sum_{i=1}^{n} x_i^2 - n\bar{x}^2$$
-   Thus
+Using the chain rule:
+$$\large \frac{\partial S}{\partial b_0} = \sum_{i=1}^{n} 2\big(y_i - b_0 - b_1 x_i\big) \cdot (-1)$$
+
+$$\large = -2\sum_{i=1}^{n} \big(y_i - b_0 - b_1 x_i\big)$$
+
+Set equal to zero:
+$$\large -2\sum_{i=1}^{n} \big(y_i - b_0 - b_1 x_i\big) = 0$$
+
+Divide by -2 and expand:
+$$\large \sum_{i=1}^{n} y_i - \sum_{i=1}^{n} b_0 - \sum_{i=1}^{n} b_1 x_i = 0$$
+
+$$\large \sum_{i=1}^{n} y_i - n b_0 - b_1 \sum_{i=1}^{n} x_i = 0$$
+
+Rearrange:
+$$\large \sum_{i=1}^{n} y_i = n b_0 + b_1 \sum_{i=1}^{n} x_i$$
+
+Divide by $n$ and use means $\bar{x}=\frac{1}{n}\sum x_i$ and $\bar{y}=\frac{1}{n}\sum y_i$:
+$$\boxed{\large \bar{y} = b_0 + b_1 \bar{x}} \qquad\text{(Equation A)}$$
+
+**Step 2: Derivative with respect to $b_1$**
+
+Take the partial derivative:
+$$\large \frac{\partial S}{\partial b_1} = \frac{\partial}{\partial b_1} \sum_{i=1}^{n} \big(y_i - (b_0 + b_1 x_i)\big)^2$$
+
+Using the chain rule:
+$$\large \frac{\partial S}{\partial b_1} = \sum_{i=1}^{n} 2\big(y_i - b_0 - b_1 x_i\big) \cdot (-x_i)$$
+
+$$\large = -2\sum_{i=1}^{n} x_i\big(y_i - b_0 - b_1 x_i\big)$$
+
+Set equal to zero and divide by -2:
+$$\large \sum_{i=1}^{n} x_i\big(y_i - b_0 - b_1 x_i\big) = 0$$
+
+Expand:
+$$\large \sum_{i=1}^{n} x_i y_i - b_0 \sum_{i=1}^{n} x_i - b_1 \sum_{i=1}^{n} x_i^2 = 0$$
+
+Rearrange:
+$$\large \sum_{i=1}^{n} x_i y_i = b_0 \sum_{i=1}^{n} x_i + b_1 \sum_{i=1}^{n} x_i^2 \qquad\text{(Equation B)}$$
+
+**Step 3: Solve the system of equations**
+
+From Equation A, solve for $b_0$:
+$$\large b_0 = \bar{y} - b_1 \bar{x}$$
+
+Substitute this into Equation B:
+$$\large \sum_{i=1}^{n} x_i y_i = (\bar{y} - b_1 \bar{x})\sum_{i=1}^{n} x_i + b_1 \sum_{i=1}^{n} x_i^2$$
+
+Since $\sum_{i=1}^{n} x_i = n\bar{x}$:
+$$\large \sum_{i=1}^{n} x_i y_i = (\bar{y} - b_1 \bar{x}) \cdot n\bar{x} + b_1 \sum_{i=1}^{n} x_i^2$$
+
+$$\large \sum_{i=1}^{n} x_i y_i = n\bar{x}\bar{y} - b_1 n\bar{x}^2 + b_1 \sum_{i=1}^{n} x_i^2$$
+
+Collect $b_1$ terms:
+$$\large \sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y} = b_1\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right)$$
+
+**Step 4: Recognize the centered sums**
+
+The numerator can be rewritten as:
+$$\large \sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y} = \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})$$
+
+The denominator can be rewritten as:
+$$\large \sum_{i=1}^{n} x_i^2 - n\bar{x}^2 = \sum_{i=1}^{n} (x_i - \bar{x})^2$$
+
+Therefore, our **final formulas** are:
    $$\boxed{b_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}
    {\sum_{i=1}^{n} (x_i - \bar{x})^2}}$$
    and then
