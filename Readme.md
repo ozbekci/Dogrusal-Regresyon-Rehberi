@@ -63,16 +63,25 @@ $$\sigma_X = \sqrt{\mathrm{Var}(X)}$$
 
 #### Useful identity (proof)
 
-Start from $\mathrm{Var}(X)=E\big[(X - \mu)^2\big]$ with $\mu=E(X)$:
-$$\begin{aligned}
-\mathrm{Var}(X)
-&= E(X^2 - 2\mu X + \mu^2) \\
-&= E(X^2) - 2\mu E(X) + \mu^2 \\
-&= E(X^2) - 2\mu^2 + \mu^2 \\
-&= E(X^2) - \big(E(X)\big)^2.
-\end{aligned}$$
-So a compact form is:
-$$\boxed{\mathrm{Var}(X) = E(X^2) - [E(X)]^2}$$
+Start from Var(X) = E[(X - μ)²] with μ = E(X):
+
+**Step 1:** Expand the squared term  
+Var(X) = E[(X - μ)²] = E[X² - 2μX + μ²]
+
+**Step 2:** Use linearity of expectation  
+= E[X²] - 2μE[X] + μ²
+
+**Step 3:** Since μ = E[X], we have E[X] = μ  
+= E[X²] - 2μ² + μ²
+
+**Step 4:** Simplify  
+= E[X²] - μ²
+
+**Step 5:** Since μ = E[X]  
+= E[X²] - [E[X]]²
+
+So the **variance identity** is:
+$$\boxed{\text{Var}(X) = E[X^2] - [E[X]]^2}$$
 
 ---
 
