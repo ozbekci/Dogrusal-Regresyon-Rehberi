@@ -39,121 +39,138 @@ where:
 - $b_1$ = slope (the rate of change in Y for a one-unit increase in X)
 
 ---
+# Deriving Linear Regression 
 
-## 2. Random Variables in Regression
-
-- A **random variable (RV)** is a variable whose values are outcomes of a random process.
-- In regression:
-
-  - The dependent variable (Y) is a random variable because its values vary due to noise and unobserved factors.
-  - The error term (\varepsilon) is also random.
-  - The independent variable (X) may be fixed or random depending on the context.
-
-Model formulation:
-$$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$$
+The aim of linear regression is to find the best-fitting straight line that describes the relationship between an independent variable (x) and a dependent variable (y).
 
 ---
 
-## 3. Estimating Coefficients – Least Squares Method
+## Key concepts
 
-We estimate $b_0, b_1$ by minimizing the **sum of squared errors (SSE):**
-$$SSE = \sum_{i=1}^n (y_i - (b_0 + b_1 x_i))^2$$
+### Expectation (mean)
 
-Setting derivatives to zero leads to the **normal equations**:
-$$n b_0 + \left(\sum x_i\right)b_1 = \sum y_i$$
-$$\left(\sum x_i\right)b_0 + \left(\sum x_i^2\right)b_1 = \sum x_i y_i$$
+The mean (expected value) of a set $X = \{x_1, x_2, \dots, x_n\}$ is
+$$E(X) = \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$$
+(where $\sum$ is the summation symbol: $\sum_{i=1}^{n} x_i = x_1 + x_2 + \dots + x_n$.)
 
-These two equations yield unique values of $b_0, b_1$ **if not all $x_i$ are identical**.
-👉 If all (x_i) are the same, the denominator in the slope formula becomes zero, and the regression line cannot be defined.
+### Standard deviation and variance
 
----
+The (population) variance measures the average squared deviation from the mean:
+$$\operatorname{Var}(X) = E\big[(X - E(X))^2\big] = \frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^2$$
+The (population) standard deviation $\sigma$ is the square root of the variance:
+$$\sigma_X = \sqrt{\operatorname{Var}(X)}$$
+(For sample estimates you will often see the denominator $n-1$ instead of $n$: $s^2 = \frac{1}{n-1}\sum (x_i-\bar{x})^2$.)
 
-## 4. Solution for the Slope (b_1)
+#### Useful identity (proof)
 
-From the normal equations, we solve for slope:
-
-### Raw form:
-
-$$b_1 = \frac{\sum x_i y_i - n \bar{x}\bar{y}}{\sum x_i^2 - n\bar{x}^2}$$
-
-### Mean-centered form:
-
-$$b_1 = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}$$
-
-### Intercept:
-
-$$b_0 = \bar{y} - b_1 \bar{x}$$
-
----
-
-## 5. Mean-Centered Form Explained
-
-**Mean-centering** means subtracting the mean from each value:
-$$x_i^* = x_i - \bar{x}, \quad y_i^* = y_i - \bar{y}$$
-
-Why useful?
-
-- It makes formulas simpler (cross terms vanish).
-- It shows slope = covariance / variance:
-  $$b_1 = \frac{\text{Cov}(X,Y)}{\text{Var}(X)}$$
-
-### Variance and Covariance:
-
-- Variance: $\text{Var}(X) = \frac{1}{n}\sum (x_i-\bar{x})^2$
-- Covariance: $\text{Cov}(X,Y) = \frac{1}{n}\sum (x_i-\bar{x})(y_i-\bar{y})$
-
-So regression slope is literally:
-$$b_1 = \frac{\text{Cov}(X,Y)}{\text{Var}(X)}$$
+Start from $\operatorname{Var}(X)=E\big[(X - \mu)^2\big]$ with $\mu=E(X)$:
+$$\begin{aligned}
+\operatorname{Var}(X)
+&= E(X^2 - 2\mu X + \mu^2) \\
+&= E(X^2) - 2\mu E(X) + \mu^2 \\
+&= E(X^2) - 2\mu^2 + \mu^2 \\
+&= E(X^2) - \big(E(X)\big)^2.
+\end{aligned}$$
+So a compact form is:
+$$\boxed{\operatorname{Var}(X) = E(X^2) - [E(X)]^2}$$
 
 ---
 
-## 6. Shorthand Notation: (S*{xx}, S*{yy}, S\_{xy})
+## Calculating the best-fitting line (Least Squares)
 
-To simplify notation, textbooks define:
+Assume the regression line has the form
+$$y = b_0 + b_1 x$$
+For observations $(x_i, y_i)$ for $i=1,\dots,n$, the predicted value is
+$$\hat{y}_i = b_0 + b_1 x_i$$
+and the residual (error) is $e_i = y_i - \hat{y}_i$.
 
-- $S_{xx} = \sum (x_i-\bar{x})^2$
-- $S_{yy} = \sum (y_i-\bar{y})^2$
-- $S_{xy} = \sum (x_i-\bar{x})(y_i-\bar{y})$
+We choose $b_0$ and $b_1$ to minimize the sum of squared residuals:
+$$S(b_0,b_1) = \sum_{i=1}^{n} \big(y_i - (b_0 + b_1 x_i)\big)^2$$
+We square the differences so that positive and negative errors do not cancel and to penalize larger errors more.
 
-Then:
+### Derivation (step-by-step)
 
-- Slope: $b_1 = \frac{S_{xy}}{S_{xx}}$
-- Intercept: $b_0 = \bar{y} - b_1 \bar{x}$
-- Correlation coefficient:
-  $$r = \frac{S_{xy}}{\sqrt{S_{xx}S_{yy}}}$$
+Set partial derivatives of $S$ with respect to $b_0$ and $b_1$ equal to zero.
+
+1. Derivative w.r.t. $b_0$:
+   $$\frac{\partial S}{\partial b_0}
+   = -2\sum_{i=1}^{n} \big(y_i - b_0 - b_1 x_i\big)
+   \overset{!}{=} 0
+   \quad\Rightarrow\quad
+   \sum_{i=1}^{n} y_i = n b_0 + b_1 \sum_{i=1}^{n} x_i$$
+   Rewrite using means $\bar{x}=\frac{1}{n}\sum x_i$ and $\bar{y}=\frac{1}{n}\sum y_i$:
+   $$\boxed{\bar{y} = b_0 + b_1 \bar{x}} \qquad\text{(Equation A)}$$
+
+2. Derivative w.r.t. $b_1$:
+   $$\frac{\partial S}{\partial b_1}
+   = -2\sum_{i=1}^{n} x_i\big(y_i - b_0 - b_1 x_i\big)
+   \overset{!}{=} 0
+   \quad\Rightarrow\quad
+   \sum_{i=1}^{n} x_i y_i = b_0 \sum_{i=1}^{n} x_i + b_1 \sum_{i=1}^{n} x_i^2$$
+   (Equation B)
+
+3. Solve the two normal equations. From Equation A:
+   $$b_0 = \bar{y} - b_1 \bar{x}$$
+   Substitute into Equation B and simplify:
+   $$\sum_{i=1}^{n} x_i y_i
+   = (\bar{y} - b_1 \bar{x})\sum_{i=1}^{n} x_i + b_1 \sum_{i=1}^{n} x_i^2
+   = n\bar{x}\bar{y} - b_1 n\bar{x}^2 + b_1 \sum_{i=1}^{n} x_i^2$$
+   Rearrange to isolate $b_1$:
+   $$\sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y}
+   = b_1\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right)$$
+   Recognize the numerator and denominator as centered sums:
+   $$\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
+   = \sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y}$$
+   $$\sum_{i=1}^{n} (x_i - \bar{x})^2
+   = \sum_{i=1}^{n} x_i^2 - n\bar{x}^2$$
+   Thus
+   $$\boxed{b_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}
+   {\sum_{i=1}^{n} (x_i - \bar{x})^2}}$$
+   and then
+   $$\boxed{b_0 = \bar{y} - b_1 \bar{x}}$$
+
+Equivalently (using covariance and variance notation):
+$$b_1 = \frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}, \quad\text{where }\operatorname{Cov}(X,Y)=\frac{1}{n}\sum (x_i-\bar{x})(y_i-\bar{y})$$
 
 ---
 
-## 7. Example (Step-by-Step)
+## Quick algorithm / pseudocode
 
-Let’s fit regression for:
-
-[
-x = [1,2,3,4], \quad y = [2,4,5,4]
-]
-
-1. Means:
-   (\bar{x} = 2.5, \quad \bar{y} = 3.75)
-
-2. Compute sums:
-
-   - (S\_{xx} = (1-2.5)^2 + (2-2.5)^2 + (3-2.5)^2 + (4-2.5)^2 = 5.0)
-   - (S\_{xy} = \sum (x_i-\bar{x})(y_i-\bar{y}) = 3.5)
-
-3. Slope:
-   (b*1 = S*{xy}/S\_{xx} = 3.5/5.0 = 0.7)
-
-4. Intercept:
-   (b_0 = \bar{y} - b_1\bar{x} = 3.75 - 0.7(2.5) = 2.0)
-
-Final regression line:
-[
-\hat{y} = 2.0 + 0.7x
-]
+1. Compute $\bar{x}$ and $\bar{y}$.
+2. Compute numerator $=\sum (x_i - \bar{x})(y_i - \bar{y})$.
+3. Compute denominator $=\sum (x_i - \bar{x})^2$.
+4. Set $b_1 =$ numerator / denominator.
+5. Set $b_0 = \bar{y} - b_1 \bar{x}$.
 
 ---
 
-## 8. Making Predictions
+## Small numeric example
+
+Data: $x=[1,2,3]$, $y=[2,3,5]$.
+
+1. Means: $\bar{x}=(1+2+3)/3=2$, $\bar{y}=(2+3+5)/3=10/3$.
+2. Numerator:
+   $$\sum (x_i-\bar{x})(y_i-\bar{y})
+   = (-1)\cdot(2-\tfrac{10}{3}) + 0\cdot(3-\tfrac{10}{3}) + 1\cdot(5-\tfrac{10}{3})
+   = 1.3333\ldots + 0 + 1.6666\ldots = 3$$
+3. Denominator:
+   $$\sum (x_i-\bar{x})^2 = (-1)^2 + 0^2 + 1^2 = 2$$
+4. Slope: $b_1 = 3 / 2 = 1.5$.
+5. Intercept: $b_0 = \bar{y} - b_1\bar{x} = \tfrac{10}{3} - 1.5\cdot 2 = \tfrac{1}{3}$.
+
+So the fitted line is:
+$$\boxed{\hat{y} = \tfrac{1}{3} + 1.5x}$$
+
+---
+
+## Notes
+
+* The formulas above are for **simple** linear regression (one predictor). For multiple predictors, the normal equations generalize to linear algebra form: $\boldsymbol{\beta} = (X^\top X)^{-1} X^\top y$.
+* Use the sample versions (divide by $n-1$) when computing sample variances/covariances for inference (t-tests, confidence intervals).
+* Squared errors (least squares) produce the best linear unbiased estimator under common assumptions (Gauss–Markov).
+
+
+##  Making Predictions
 
 Once we have our regression coefficients $b_0, b_1$, we can make predictions for new values of X:
 
@@ -181,18 +198,5 @@ $$\hat{y} = b_0 + b_1 \cdot x_{new}$$
 - Forecasting sales revenue from advertising spend
 - Estimating medical costs from patient characteristics
 - Stock price prediction using economic indicators
-
----
-
-## 9. Summary
-
-- Regression models Y as a linear function of X plus error.
-- Y and $\varepsilon$ are random variables.
-- Regression fails if all $x_i$ are identical.
-- Slope can be written in raw form or mean-centered form.
-- Mean-centering links regression directly to covariance and variance.
-- Shorthand notation $S_{xx}, S_{yy}, S_{xy}$ makes formulas compact.
-- The regression line is:
-  $$\hat{y} = b_0 + b_1 x, \quad b_1 = \frac{S_{xy}}{S_{xx}}, \quad b_0 = \bar{y} - b_1 \bar{x}$$
 
 ---
